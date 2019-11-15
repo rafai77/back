@@ -227,6 +227,8 @@ app.get('/del', (req, res) => {
 
 
 app.get('/datos', (req, res) => {
+    if(req.session.loggedin)
+    {
     mysqlConnection.query('SELECT * FROM archivos', (err, rows, fields) => {
         if(!err){
             res.json(rows);
@@ -234,6 +236,15 @@ app.get('/datos', (req, res) => {
             console.log(err);
         }
     });
+    }
+    else
+    {
+        res.json(
+            {
+                log: false,
+                eror: "No inicio session"
+            })
+    }
 });
 
 
