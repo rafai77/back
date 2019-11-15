@@ -158,9 +158,8 @@ let storage = multer.diskStorage({
 
 
 const upload = multer({ storage });
-if(req.session.loggedin)
-    {
-app.post('/subir',upload.single('file'),(req,res)=>{
+
+app.post('/subir',(req,res)=>{
     if(req.session.loggedin)
     {
     
@@ -180,6 +179,7 @@ app.post('/subir',upload.single('file'),(req,res)=>{
         }
         else
         {
+            upload.single('file')
             console.log(`Storage location is ${req.hostname}/${req.file.path}`);
 
         }
@@ -200,7 +200,7 @@ app.post('/subir',upload.single('file'),(req,res)=>{
     }
 
 });
-    }
+    
 
 app.get('/userA', (req, res) => {
     mysqlConnection.query('SELECT * FROM usuarios', (err, rows, fields) => {
