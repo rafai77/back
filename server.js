@@ -84,11 +84,11 @@ app.post('/log', function (req,res){
 app.get('/', (req,res)=>{
     if(req.session.loggedin)
     {
-        return res.send('This is the home page!');
+        return res.send('Iniciado!');
     }
     else
     {
-        return res.send('This is the home page no user!');
+        return res.send('no iniciado :(!');
     }
 });
 
@@ -158,7 +158,8 @@ let storage = multer.diskStorage({
 
 
 const upload = multer({ storage });
-
+if(req.session.loggedin)
+    {
 app.post('/subir',upload.single('file'),(req,res)=>{
     if(req.session.loggedin)
     {
@@ -186,6 +187,7 @@ app.post('/subir',upload.single('file'),(req,res)=>{
     });
     
     
+    
     return res.send(req.file); 
     }
     else
@@ -198,6 +200,7 @@ app.post('/subir',upload.single('file'),(req,res)=>{
     }
 
 });
+    }
 
 app.get('/userA', (req, res) => {
     mysqlConnection.query('SELECT * FROM usuarios', (err, rows, fields) => {
