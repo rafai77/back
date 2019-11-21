@@ -152,7 +152,7 @@ let storage = multer.diskStorage({
         cb(null, `./${req.session.username}`)
     },
     filename:(req, file, cb)=>{
-        cb(null, "file" + '-'+ Date.now()+ path.extname(file.originalname));
+        cb(null, file.fieldname + '-'+ Date.now()+ path.extname(file.originalname));
     }
 });
 
@@ -162,7 +162,7 @@ const upload = multer({ storage });
 app.post('/subir',(req,res)=>{
     if(req.session.loggedin)
     {
-    
+    console.log(req.body)
 
     var id = idu
     var titulo = req.file.filename;
