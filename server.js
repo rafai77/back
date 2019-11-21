@@ -162,6 +162,8 @@ const upload = multer({ storage });
 app.post('/subir',(req,res)=>{
     if(req.session.loggedin)
     {
+    upload.single('file')
+    console.log(`Storage location is ${req.hostname}/${req.file.path}`);
     console.log(req.body)
 
     var id = idu
@@ -179,8 +181,7 @@ app.post('/subir',(req,res)=>{
         }
         else
         {
-            upload.single('file')
-            console.log(`Storage location is ${req.hostname}/${req.file.path}`);
+            
 
         }
 
