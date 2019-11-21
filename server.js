@@ -230,7 +230,7 @@ app.get('/del', (req, res) => {
 app.get('/datos', (req, res) => {
     if(req.session.loggedin)
     {
-    mysqlConnection.query('SELECT * FROM archivos', (err, rows, fields) => {
+    mysqlConnection.query('SELECT * FROM archivos where id=?',idu, (err, rows, fields) => {
         if(!err){
             res.json(rows);
         } else{
