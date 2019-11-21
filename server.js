@@ -254,6 +254,7 @@ app.get('/download:nombre', function(req, res) {
     {
     //var archivo = req.body;
     var archivo=req.url;
+    console.log(archivo);
     var file = `./${req.session.username}/` + archivo.nombre;
 
     res.download(file); 
