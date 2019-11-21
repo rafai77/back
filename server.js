@@ -249,7 +249,7 @@ app.get('/datos', (req, res) => {
 });
 
 
-app.get('/download:nombre', function(req, res) {
+app.get('/download/:nombre', function(req, res) {
     if(req.session.loggedin)
     {
     //var archivo = req.body;
