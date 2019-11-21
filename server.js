@@ -249,11 +249,11 @@ app.get('/datos', (req, res) => {
 });
 
 
-app.get('/download', function(req, res) {
+app.get('/download:nombre', function(req, res) {
     if(req.session.loggedin)
     {
-    var archivo = req.body;
-
+    //var archivo = req.body;
+    var archivo=req.url;
     var file = `./${req.session.username}/` + archivo.nombre;
 
     res.download(file); 
