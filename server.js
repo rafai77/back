@@ -159,7 +159,7 @@ let storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post( upload.single('file'),'/subir',(req,res)=>{
+app.post( '/subir',upload.single('file'),(req,res)=>{
     if(req.session.loggedin)
     {
    
