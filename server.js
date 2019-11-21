@@ -159,10 +159,10 @@ let storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post('/subir',(req,res)=>{
+app.post( upload.single('file'),'/subir',(req,res)=>{
     if(req.session.loggedin)
     {
-    upload.single('file')
+   
     console.log(`Storage location is ${req.hostname}/${req.file.path}`);
     console.log(req.body)
 
