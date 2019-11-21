@@ -253,7 +253,7 @@ app.get('/download', function(req, res) {
     {
     var archivo = req.body;
 
-    var file = __dirname + `./${req.session.username}/` + archivo.nombre;
+    var file = `./${req.session.username}/` + archivo.nombre;
 
     res.download(file); 
     }
