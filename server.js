@@ -10,14 +10,17 @@ const path = require('path');
 const multer = require('multer');
 
 
-
 const mysqlConnection = require('./bd');
 app.use(session(
     {
         //secret: 'MD5'
         secret: 'secret',
-	    resave: true,
-	    saveUninitialized: true
+        resave: true,
+        rolling: true,
+        saveUninitialized: false,
+        cookie: {
+                expires : 180*1000
+        }
     }
 
 ))
@@ -41,6 +44,7 @@ app.post('/log', function (req,res){
                 req.session.loggedin = true;
                 req.session.username = user;
                 idu=results[0].id
+                //req.session.cookie.maxAge=new Date(Date.now() + 20000)
                 
                 console.log(idu)
                 var dir = `./${user}`;
@@ -136,6 +140,50 @@ app.post('/add',(req,res)=>
     }
 
 });
+
+app.delete('/del/:id', (req,res)=>{
+
+    
+    mysqlConnection.query('SELECT titulo FROM archivos WHERE id_archivos = ? ',req.params.id, function(error, results, fields) 
+    {
+        var ti=results;
+       
+            // if no error, file has been deleted successfully
+            mysqlConnection.query('DELETE  FROM archivos WHERE id_archivos = ? ',req.params.id, function(error, results, fields) 
+            {
+                    console.log("dfsdf");
+                    console.log(error);
+                    
+                    fs.unlink(`./${req.session.username}/${ti[0].titulo}`, function (err) {
+                        
+                        if (err) 
+                        {
+                            res.json(
+                                {
+                                    error: true,
+                                    status: 'no se borro '
+                                }   );
+                            throw err;
+                        }
+                       
+                        console.log('File deleted!');
+                        res.json(
+                        {
+                            error: false,
+                            status: 'Elemento borrado '
+                        }   );
+                    });
+                    
+
+            });
+            
+        });
+
+    });
+    
+     
+
+
 
 
 
@@ -268,6 +316,22 @@ app.get('/download/:nombre', function(req, res) {
             })
     }
 });
+
+
+app.get('/datos2', (req, res) => {
+    
+    mysqlConnection.query('SELECT * FROM archivos', (err, rows, fields) => {
+        if(!err){
+            res.json(rows);
+        } else{
+            console.log(err);
+        }
+    });
+
+    
+});
+
+
 
 
 app.listen(PORT, ()=> console.log(`Server is up on port: ${PORT}`));
