@@ -130,6 +130,7 @@ app.post('/add',(req,res)=>
 			
 		});
     } 
+
     else 
     {
         res.json(
@@ -143,7 +144,8 @@ app.post('/add',(req,res)=>
 
 app.delete('/del/:id', (req,res)=>{
 
-    
+    if(req.session.loggedin)
+    {
     mysqlConnection.query('SELECT titulo FROM archivos WHERE id_archivos = ? ',req.params.id, function(error, results, fields) 
     {
         var ti=results;
@@ -178,9 +180,15 @@ app.delete('/del/:id', (req,res)=>{
             });
             
         });
+    }
+    else
+    {
+        return res.send('no iniciado :(!');
+    }
+     
 
     });
-    
+   
      
 
 
@@ -330,6 +338,72 @@ app.get('/datos2', (req, res) => {
 
     
 });
+
+
+app.put('/actualizar', (req, res) => {
+    
+    
+    var pass = req.body.pass;
+    var Npass = req.body.Npass;
+    console.log(idu);
+    if(req.session.loggedin)
+    {
+        console.log(idu);   
+        console.log(Npass); 
+        mysqlConnection.query('SELECT * FROM usuarios where password=? and id=?  ',[pass,idu], (err, rows, fields) => {
+            if(rows.length==1)
+            {
+                console.log(rows);
+                id=rows[0].id;
+                console.log(id);   
+                console.log(Npass);    
+
+                mysqlConnection.query('UPDATE usuarios SET password=?  where id=? ',[Npass,id], (err, rows) => {
+                  
+                    if(!err)
+                    {
+                        res.json(
+                            {
+                                error: false,
+                                eror: "Actualizado"
+                            })
+                    }
+                    else
+                    {
+                        console.log(err)
+                        res.json(
+                            {
+                                error: true,
+                                eror: "no Actualizado"
+                            })
+
+                    }
+
+                });
+                
+            }
+            else
+            {
+                res.json(
+                    {
+                        error: true,
+                        eror: "contraseña incorrecta"
+                    })
+            }
+        });
+    }
+    else
+    {
+        res.json(
+            {
+                log: false,
+                eror: "No inicio session"
+            })
+    }
+
+    
+});
+
 
 
 
