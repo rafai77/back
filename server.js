@@ -19,7 +19,7 @@ app.use(session(
         rolling: true,
         saveUninitialized: false,
         cookie: {
-                expires : 180*1000
+                expires : 180*1000*10
         }
     }
 
